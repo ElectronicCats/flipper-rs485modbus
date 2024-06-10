@@ -381,23 +381,31 @@ void discreteValuesParser(void* context, uint8_t* buff, size_t len, FuriString* 
         len--;
     }
 }
+
 void analogValuesParser(void* context, uint8_t* buff, size_t len, FuriString* data) {
     App* app = context;
     uint16_t value = 0;
-    uint8_t offset = 0;
-    while(len) {
-        memcpy(&value + 8, buff + offset, 1);
-        offset++;
-        memcpy(&value, buff + offset, 1);
-        offset++;
+    size_t offset = 0;
+
+    while (offset < len) {
+        value = 0;
+        if (offset + 1 < len) {
+            memcpy(((uint8_t*)&value) + 1, buff + offset, sizeof(uint8_t));
+            memcpy((uint8_t*)&value, buff + offset + 1, sizeof(uint8_t));
+        } else if (offset < len) {
+            memcpy(((uint8_t*)&value) + 1, buff + offset, sizeof(uint8_t));
+        }
+
         furi_string_cat_printf(
             data,
             app->uart->cfg->hexOutput ? "\n->Reg%d: 0x%04X" : "\n->Reg%d: %d",
             offset / 2,
             value);
-        len--;
+
+        offset += 2;
     }
 }
+
 void pduParser(void* context, bool slave, uint8_t* buf, size_t len, FuriString* data) {
     App* app = context;
     size_t offset = 2;
@@ -444,7 +452,7 @@ void pduParser(void* context, bool slave, uint8_t* buf, size_t len, FuriString* 
     } else if(FUNCTION <= 0x02)
         discreteValuesParser(app, buf + offset, bCount, data);
     else
-        analogValuesParser(app, buf + offset, bCount / 2, data);
+        analogValuesParser(app, buf + offset, bCount, data);
 
     if(FUNCTION >= 0x0F && !slave) {
         memcpy(&bCount, buf + offset, 1);
@@ -454,7 +462,7 @@ void pduParser(void* context, bool slave, uint8_t* buf, size_t len, FuriString* 
         if(FUNCTION == 0x0F)
             discreteValuesParser(app, buf + offset, bCount, data);
         else
-            analogValuesParser(app, buf + offset, bCount / 2, data);
+            analogValuesParser(app, buf + offset, bCount, data);
     }
     furi_string_cat_printf(data, "\nCRC: 0x%02X", CRCL | CRCH << 8);
 }
