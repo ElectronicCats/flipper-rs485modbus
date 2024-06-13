@@ -1,4 +1,19 @@
 # flipper-rs485modbus
+
+<p align="center">
+<a href="https://github.com/ElectronicCats/flipper-shields/wiki">
+	<img src="https://github.com/ElectronicCats/flipper-shields/assets/40640735/449ecb03-ef01-40e7-8c83-a89afc3baa88" width="43%">
+</p>
+ 
+<p align=center>
+<a href="https://electroniccats.com/?s=Flipper+Add-On&post_type=product&product_cat=">
+  <img src="https://github.com/ElectronicCats/flipper-shields/assets/44976441/0c617467-052b-4ab1-a3b9-ba36e1f55a91" width="200" height="104" />
+ </a>
+<a href="https://github.com/ElectronicCats/flipper-rs485modbus/wiki">
+  <img src="https://github.com/ElectronicCats/flipper-shields/assets/44976441/6aa7f319-3256-442e-a00d-33c8126833ec" width="200" height="104" />
+</a>
+</p>
+
 A Flipper plugin with helpful Modbus RTU features, you will be able to read and write data into a Mobus RTU network.
 Requires the Electronic Cats Flipper Addon "Modbus".
 
