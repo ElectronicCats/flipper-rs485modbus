@@ -112,7 +112,7 @@ typedef struct {
   DialogsApp* dialogs;
   Storage* storage;
   File* LOGfile;
-  char logFilePath[100];
+  char* logFilePath;
   bool LOGfileReady;
 
   size_t rows;
@@ -610,9 +610,6 @@ static int32_t uart_worker(void* context) {
       ModbusSender(app);
     }
   }
-
-  furi_stream_buffer_free(app->uart->rxBuff);
-  furi_stream_buffer_free(app->msgBuf);
 
   return 0;
 }
@@ -1302,6 +1299,7 @@ static App* modbus_app_alloc() {
                            byte_input_get_view(app->byteInput));
 
   app->text = furi_string_alloc();
+  app->logFilePath = (char*)malloc(100);
   furi_string_reserve(app->text, 1024);
   makePaths(app);
 
@@ -1336,6 +1334,7 @@ void modbus_app_free(App* app) {
   furi_assert(app);
   view_dispatcher_remove_view(app->viewDispatcher, ByteInput_View);
   view_dispatcher_remove_view(app->viewDispatcher, TextBox_View);
+  free(app->logFilePath);
   furi_string_free(app->text);
   text_box_free(app->textBox);
   view_dispatcher_remove_view(app->viewDispatcher, VarList_View);
