@@ -1,5 +1,4 @@
 //////////////////////////   Libraries  //////////////////////////
-#include <assets_icons.h>
 #include <furi.h>
 #include <furi_hal.h>
 #include <gui/gui.h>
