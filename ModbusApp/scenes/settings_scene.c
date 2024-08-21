@@ -2,7 +2,8 @@
 #include "../modbus_storage/modbus_storage.h"
 #include "../modbus_uart/modbus_uart.h"
 
-//////////////////////////   Settings Scene  //////////////////////////
+
+
 void itemChangedCB(VariableItem* item) {
   App* app = variable_item_get_context(item);
   uint8_t index = variable_item_get_current_value_index(item);

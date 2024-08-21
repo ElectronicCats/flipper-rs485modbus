@@ -1,6 +1,6 @@
 #include "../Modbus.h"
+#include "../modbus_parser/modbus_parser.h"
 
-//////////////////////////   MSGsBuffer Scene  ////////////////////////
 void OnItemEnterCB(void* context, uint32_t index) {
   App* app = context;
   uint8_t start = index ? app->ringBuffer->delimiters[index - 1] + 1 : 0;

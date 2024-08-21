@@ -11,6 +11,8 @@
 #include <gui/view_dispatcher.h>
 #include <dialogs/dialogs.h>
 #include <storage/storage.h>
+#include <expansion/expansion.h>
+#include <expansion/expansion_settings.h>
 
 #include <stm32wbxx_ll_lpuart.h>
 #include <stm32wbxx_ll_usart.h>
@@ -120,6 +122,7 @@ typedef struct {
     uint8_t msgBuf[RX_BUF_SIZE + 1];
     size_t msgLen;
     RingBuffer* ringBuffer;
+    Expansion* expansion;
 } App;
 
 typedef enum {
@@ -153,4 +156,3 @@ extern const char* saveLOGValues[];
 extern const char* outputFormatValues[];
 extern const char* functionNames[];
 extern const char* exceptionCodes[];
-uint16_t getCRC(uint8_t* buf, uint8_t len);

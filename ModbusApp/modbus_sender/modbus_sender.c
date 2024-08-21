@@ -1,4 +1,5 @@
 #include "modbus_sender.h"
+#include "../modbus_parser/modbus_parser.h"
 
 void ModbusSender(void* context) {
     App* app = context;

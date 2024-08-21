@@ -45,23 +45,6 @@ const char* exceptionCodes[] = {
     "",
     "GATEWAY PATH\nUNAVAILABLE"
     "GATEWAY TARGET DEVICE\nFAILED TO RESPOND"};
-
-uint16_t getCRC(uint8_t* buf, uint8_t len) {
-    uint16_t crc = 0xFFFF;
-
-    for(int pos = 0; pos < len; pos++) {
-        crc ^= (uint16_t)buf[pos];
-
-        for(int i = 8; i != 0; i--) {
-            if((crc & 0x0001) != 0) {
-                crc >>= 1;
-                crc ^= 0xA001;
-            } else
-                crc >>= 1;
-        }
-    }
-    return crc;
-}
 //////////////////////////   ViewDispatcher Callbacks //////////////////////////
 static bool CustomEventCB(void* context, uint32_t event) {
     furi_assert(context);
@@ -196,18 +179,22 @@ void modbus_app_free(App* app) {
     storage_file_free(app->LOGfile);
     furi_record_close(RECORD_STORAGE);
     furi_record_close(RECORD_DIALOGS);
+    furi_record_close(RECORD_EXPANSION);
+    expansion_enable(app->expansion);
     free(app);
 }
 
 //////////////////////////   Entry Point   //////////////////////////
 int32_t Modbus_app(void* p) {
     UNUSED(p);
+    App* app = modbus_app_alloc();
+    Gui* gui = furi_record_open(RECORD_GUI);
+    app->expansion = furi_record_open(RECORD_EXPANSION);
+    expansion_disable(app->expansion);
     furi_hal_gpio_init_simple(&gpio_ext_pc0, GpioModeOutputPushPull);
     furi_hal_gpio_init_simple(&gpio_ext_pc1, GpioModeOutputPushPull);
     furi_hal_gpio_write(&gpio_ext_pc0, 0);
     furi_hal_gpio_write(&gpio_ext_pc1, 0);
-    App* app = modbus_app_alloc();
-    Gui* gui = furi_record_open(RECORD_GUI);
     view_dispatcher_attach_to_gui(app->viewDispatcher, gui, ViewDispatcherTypeFullscreen);
     scene_manager_next_scene(app->sceneManager, app_scene_main);
     view_dispatcher_run(app->viewDispatcher);
