@@ -19,7 +19,6 @@
 
 #include "scenes_config/app_scene_functions.h"
 
-
 #define PATHAPP    "apps_data/modbus"
 #define PATHAPPEXT EXT_PATH(PATHAPP)
 #define PATHLOGS   PATHAPPEXT "/logs"

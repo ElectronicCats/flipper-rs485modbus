@@ -17,4 +17,3 @@ ADD_SCENE(app, sender, sender)
 ADD_SCENE(app, byte_input, byte_input)
 ADD_SCENE(app, manual_sender, manual_sender)
 ADD_SCENE(app, msgs_buffer, msgs_buffer)
-    
