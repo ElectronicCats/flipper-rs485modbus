@@ -21,6 +21,7 @@ void mainOptionsCB(void* context, uint32_t index) {
         break;
     case Read_LOG_Option:
         scene_manager_set_scene_state(app->sceneManager, app_scene_main, Read_LOG_Option);
+        close_log_file_stream(app);
         if(OpenLogFile(app)) {
             scene_manager_set_scene_state(app->sceneManager, app_scene_sniffer, Read_LOG_Option);
             scene_manager_next_scene(app->sceneManager, app_scene_sniffer);
