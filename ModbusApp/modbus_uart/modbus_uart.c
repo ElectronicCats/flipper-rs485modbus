@@ -89,8 +89,9 @@ void serial_init(Uart* uart, uint8_t uart_ch) {
     furi_hal_serial_dma_rx_start(uart->serial_handle, on_rx_cb, uart, false);
 }
 void serial_deinit(Uart* uart) {
-    furi_assert(uart->serial_handle);
-
+    if(uart->serial_handle == NULL) {
+        return;
+    }
     furi_hal_serial_dma_rx_stop(uart->serial_handle);
     furi_hal_serial_deinit(uart->serial_handle);
     furi_hal_serial_control_release(uart->serial_handle);

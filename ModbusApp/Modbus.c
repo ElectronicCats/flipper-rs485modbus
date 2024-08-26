@@ -81,7 +81,7 @@ Uart* Uart_Alloc(void* context) {
     uart->cfg = Config_Alloc();
     uart->rxStream = furi_stream_buffer_alloc(RX_BUF_SIZE, 1);
     uart->rxThread = furi_thread_alloc_ex("RxThread", 1024, uart_worker, app);
-
+    uart->serial_handle = NULL;
     // serial_init(uart, UART_CH);
     furi_thread_start(uart->rxThread);
 
@@ -147,10 +147,7 @@ void uartFree(void* context) {
     furi_thread_flags_set(furi_thread_get_id(app->uart->rxThread), WorkerEvtStop);
     furi_thread_join(app->uart->rxThread);
     furi_thread_free(app->uart->rxThread);
-    app->LOGfileReady = false;
-    if(app->LOGfile && storage_file_is_open(app->LOGfile)) {
-        storage_file_close(app->LOGfile);
-    }
+    close_log_file_stream(app);
     free(app->uart->cfg);
     free(app->uart);
     free(app->modbus);

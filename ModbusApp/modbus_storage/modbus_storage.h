@@ -11,3 +11,5 @@ char* sequential_file_resolve_path(
     const char* extension);
 bool OpenLogFile(App* app);
 void makePaths(App* app);
+void open_log_file_stream(void* context);
+void close_log_file_stream(void* context);

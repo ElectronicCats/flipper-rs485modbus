@@ -33,6 +33,27 @@ void makePaths(App* app) {
         dialog_message_show_storage_error(app->dialogs, "Cannot create\nlogs folder");
     }
 }
+void open_log_file_stream(void* context) {
+    App* app = context;
+    strcpy(app->logFilePath, sequential_file_resolve_path(app->storage, PATHLOGS, "Log", "log"));
+    if(app->logFilePath != NULL) {
+        if(storage_file_open(app->LOGfile, app->logFilePath, FSAM_WRITE, FSOM_CREATE_ALWAYS)) {
+            furi_string_reset(app->text);
+            app->LOGfileReady = true;
+        } else {
+            dialog_message_show_storage_error(app->dialogs, "Cannot open log file");
+        }
+    } else {
+        dialog_message_show_storage_error(app->dialogs, "Cannot resolve log path");
+    }
+}
+void close_log_file_stream(void* context) {
+    App* app = context;
+    if(app->LOGfile && storage_file_is_open(app->LOGfile)) {
+        app->LOGfileReady = false;
+        storage_file_close(app->LOGfile);
+    }
+}
 bool OpenLogFile(App* app) {
     // browse for files
     FuriString* predefined_filepath = furi_string_alloc_set_str(PATHLOGS);
@@ -45,7 +66,6 @@ bool OpenLogFile(App* app) {
     }
     if(storage_file_open(
            app->LOGfile, furi_string_get_cstr(selected_filepath), FSAM_READ, FSOM_OPEN_EXISTING)) {
-        app->uart->cfg->saveLOG = false;
         furi_string_reset(app->text);
         char buf[storage_file_size(app->LOGfile)];
         storage_file_read(app->LOGfile, buf, sizeof(buf));

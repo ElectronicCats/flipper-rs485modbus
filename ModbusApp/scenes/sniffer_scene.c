@@ -1,12 +1,18 @@
 #include "../Modbus.h"
 #include "../modbus_uart/modbus_uart.h"
+#include "../modbus_storage/modbus_storage.h"
 
-//////////////////////////   Sniffer Scene  //////////////////////////
+static void sniffer_begin(App* app) {
+    serial_init(app->uart, UART_CH);
+    if(app->uart->cfg->saveLOG && !storage_file_is_open(app->LOGfile)) {
+        open_log_file_stream(app);
+    }
+}
 void app_scene_sniffer_on_enter(void* context) {
     App* app = context;
-    serial_init(app->uart, UART_CH);
     if(scene_manager_get_scene_state(app->sceneManager, app_scene_sniffer) == Sniffer_Option ||
        scene_manager_get_scene_state(app->sceneManager, app_scene_sniffer) == Sender_Option) {
+        sniffer_begin(app);
         text_box_set_font(app->textBox, TextBoxFontText);
         text_box_set_focus(app->textBox, TextBoxFocusEnd);
         furi_string_cat_printf(

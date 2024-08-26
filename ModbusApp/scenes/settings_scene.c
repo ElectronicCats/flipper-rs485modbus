@@ -79,20 +79,6 @@ bool app_scene_settings_on_event(void* context, SceneManagerEvent event) {
 }
 void app_scene_settings_on_exit(void* context) {
     App* app = context;
-    if(app->uart->cfg->saveLOG) {
-        strcpy(
-            app->logFilePath, sequential_file_resolve_path(app->storage, PATHLOGS, "Log", "log"));
-        if(app->logFilePath != NULL) {
-            if(storage_file_open(app->LOGfile, app->logFilePath, FSAM_WRITE, FSOM_CREATE_ALWAYS)) {
-                furi_string_reset(app->text);
-                app->LOGfileReady = true;
-            } else {
-                dialog_message_show_storage_error(app->dialogs, "Cannot open log file");
-            }
-        } else {
-            dialog_message_show_storage_error(app->dialogs, "Cannot resolve log path");
-        }
-    }
     uart_set_config(app);
     variable_item_list_reset(app->varList);
 }
