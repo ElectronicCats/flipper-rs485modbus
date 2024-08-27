@@ -19,6 +19,8 @@
 A Flipper plugin with helpful Modbus RTU features, you will be able to read and write data into a Mobus RTU network.
 Requires the Electronic Cats Flipper Addon "Modbus".
 
+Please visit the wiki for detailed information on how to use the app.
+
 ## Features
   * Reads and displays data sniffed from the BUS
   * Customizable Uart Parameters
@@ -26,7 +28,6 @@ Requires the Electronic Cats Flipper Addon "Modbus".
   * Exports sniffing sesions in LOG files to the SD card
   * Packet injection as Master
   * Saves the recent packet structures, then allows you to modify & inject them again
-## How to use the app
 
 ## Maintainer
 
