@@ -13,7 +13,7 @@ jobs:
         with:
           # Set to 'release' to build for latest published release version or dev for develop
           sdk-index-url: https://up.unleashedflip.com/directory.json
-          sdk-channel: release
+          sdk-channel: dev
           app-dir: ./ModbusApp/
       - name: Upload app artifacts
         uses: actions/upload-artifact@v4
